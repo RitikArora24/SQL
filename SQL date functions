@@ -1,0 +1,252 @@
+1. Write a query to display the first day of the month (in datetime format) three months before the current month. Sample current date : 2014-09-03 Expected result : 2014-06-01 
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select to_char(round(add_months(sysdate,-3),'month'),'yyyy-mm-dd')
+  2* from dual
+SQL> /
+
+TO_CHAR(RO
+----------
+2023-01-01
+
+
+
+2. Write a query to display the last day of the month (in datetime format) three months before the current month. 
+
+SQL> select to_char(last_day(add_months(sysdate,-3)),'MM/DD/YYYY')
+  2  from dual;
+
+TO_CHAR(LA
+----------
+01/31/2023
+
+
+3. Write a query to get the distinct Mondays from hiredate in emp tables. 
+
+SQL> select distinct hiredate, to_char(hiredate,'day')
+  2  from emp
+  3  where trim(to_char(hiredate,'day'))='monday';
+
+HIREDATE  TO_CHAR(H
+--------- ---------
+28-SEP-81 monday
+
+
+4. Write a query to get the first day of the current year.
+
+
+method 1
+SQL> select round(sysdate,'year')
+  2  from dual;
+
+ROUND(SYS
+---------
+01-JAN-23
+
+method 2
+SQL> select trunc(sysdate,'year')
+  2  from dual;
+
+TRUNC(SYS
+---------
+01-JAN-23
+
+
+5. Write a query to get the last day of the current year. 
+
+SQL> select add_months(trunc(sysdate,'year'),12)-1
+  2  from dual;
+
+ADD_MONTH
+---------
+31-DEC-23
+
+
+6. Write a query to calculate your age in year. 
+
+SQL> select months_between(sysdate,to_date('27-DEC-1995','DD-MON-YYYY'))/12 as age
+  2  from dual;
+
+       AGE
+----------
+27.2782925
+
+7. Write a query to get the current date in the following format. Sample date : 04-sep-2014 Output : September 4, 2014
+
+SQL> select to_char(sysdate,'month dd, yyyy')
+  2  from dual;
+
+TO_CHAR(SYSDATE,'M
+------------------
+april     06, 2023
+
+
+8. Write a query to get the current date in Thursday September 2014 format. Thursday September 2014 
+
+
+SQL> select to_char(sysdate,'DAY MONTH YYYY')
+  2  from dual;
+
+TO_CHAR(SYSDATE,'DAYMONT
+------------------------
+THURSDAY  APRIL     2023
+
+
+9. Write a query to extract the year from the current date. 
+
+SQL> select extract(year from sysdate)
+  2  from dual;
+
+EXTRACT(YEARFROMSYSDATE)
+------------------------
+                    2023
+
+
+10. Write a query to get the first name and hire date from employees table where hire date between '1987-06-01' and '1987-07-30' 
+
+SQL> select ename,hiredate
+  2  from emp
+  3  where hiredate between '01-JUN-87' and '30-JUL-87';
+
+no rows selected
+
+11. Write a query to display the current date in the following format. Sample output: Thursday 4th September 2014 00:00:00 
+
+SQL> select to_char(sysdate,'Day ddth Month YYYY HH:MM:SS')
+  2  from dual;
+
+TO_CHAR(SYSDATE,'DAYDDTHMONTHYYYYHH:MM
+--------------------------------------
+Thursday  06th April     2023 09:04:24
+
+12. Write a query to display the current date in the following format. Sample output: 05/09/2014 
+
+SQL> select to_char(sysdate,'dd/mm/yyyy')
+  2  from dual;
+
+TO_CHAR(SY
+----------
+06/04/2023
+
+
+13. Write a query to display the current date in the following format. Sample output: 12:00 AM Sep 5, 2014 
+
+SQL> select to_char(sysdate,'HH:MM PM MON DD, YYYY')
+  2  from dual;
+
+TO_CHAR(SYSDATE,'HH:M
+---------------------
+09:04 PM APR 06, 2023
+
+
+14. Write a query to get the employees who joined in the month of June
+
+SQL> select * from emp
+  2  where extract(month from hiredate)=6;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450
+           10
+
+
+15. Write a query to get the years in which more than 10 employees joined. 
+
+SQL> select to_char(hiredate,'yyyy') as year
+  2  from emp
+  3  group by to_char(hiredate,'yyyy')
+  4  having count(empno)>=10;
+
+YEAR
+----
+1981
+
+16. Write a query to get first name of employees who joined in 1987. 
+SQL> select * from emp
+  2  where extract(year from hiredate)=1987;
+
+no rows selected
+
+
+17. Write a query to get employees whose experience is more than 5 years. 
+
+SQL> select count(*) as "Emp>5yr Exp"
+  2  from emp
+  3  where ((sysdate-hiredate)/365)>5;
+
+Emp>5yr Exp
+-----------
+         14
+
+
+18. Write a query to get employee ID, last name, and date of first salary of the employees. 
+
+SQL> select empno,ename,add_months(hiredate,1) as "Date of 1st Salary"
+  2  from emp;
+
+     EMPNO ENAME      Date of 1
+---------- ---------- ---------
+      7369 SMITH      17-JAN-81
+      7499 ALLEN      20-MAR-81
+      7521 WARD       22-MAR-81
+      7566 JONES      02-MAY-81
+      7654 MARTIN     28-OCT-81
+      7698 BLAKE      01-JUN-81
+      7782 CLARK      09-JUL-81
+      7788 SCOTT      09-JAN-83
+      7839 KING       17-DEC-81
+      7844 TURNER     08-OCT-81
+      7876 ADAMS      12-FEB-83
+      7900 JAMES      03-JAN-82
+      7902 FORD       03-JAN-82
+      7934 MILLER     23-FEB-82
+
+14 rows selected.
+
+
+19. Write a query to get first name, hire date and experience of the employees. Sample table: employees 
+
+SQL> select ename,hiredate,floor((sysdate-hiredate)/365) as Experience
+  2  from emp
+  3  ;
+
+ENAME      HIREDATE  EXPERIENCE
+---------- --------- ----------
+SMITH      17-DEC-80         42
+ALLEN      20-FEB-81         42
+WARD       22-FEB-81         42
+JONES      02-APR-81         42
+MARTIN     28-SEP-81         41
+BLAKE      01-MAY-81         41
+CLARK      09-JUN-81         41
+SCOTT      09-DEC-82         40
+KING       17-NOV-81         41
+TURNER     08-SEP-81         41
+ADAMS      12-JAN-83         40
+JAMES      03-DEC-81         41
+FORD       03-DEC-81         41
+MILLER     23-JAN-82         41
+
+14 rows selected.
+
+
+20. Write a query to get the department ID, year, and number of employees joined.
+
+SQL> select deptno,to_char(hiredate,'yyyy') as year,count(empno)
+  2  from emp
+  3  group by deptno,to_char(hiredate,'yyyy')
+  4  order by deptno;
+
+    DEPTNO YEAR COUNT(EMPNO)
+---------- ---- ------------
+        10 1981            2
+        10 1982            1
+        20 1980            1
+        20 1981            2
+        20 1982            1
+        20 1983            1
+        30 1981            6
+
+7 rows selected.
