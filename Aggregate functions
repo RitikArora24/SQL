@@ -1,0 +1,94 @@
+#Aggregate functions practice questions and their queries
+
+
+1. find max sal and min sal for each job
+
+SELECT job, MAX(sal) AS max_sal, MIN(sal) AS min_sal
+FROM employees
+GROUP BY job;
+
+
+2. find how many employess have not received commission
+
+SELECT COUNT(*) AS count_no_commission
+FROM employees
+WHERE commission_pct IS NULL;
+
+
+3. find sum of sal of all employees working in dept no 10
+
+SELECT SUM(sal) AS sum_sal
+FROM employees
+WHERE department_id = 10;
+
+
+4. find maximum salary,average sal for each job in every department
+
+SELECT department_id, job, MAX(sal) AS max_sal, AVG(sal) AS avg_sal
+FROM employees
+GROUP BY department_id, job;
+
+
+5. find max salary for every department if deptno is > 15 and arrange data in deptno order.
+SELECT department_id, MAX(sal) AS max_sal
+FROM employees
+WHERE department_id > 15
+GROUP BY department_id
+ORDER BY department_id;
+
+6. find sum salary for every department if sum is > 3000
+SELECT department_id, SUM(sal) AS sum_sal
+FROM employees
+GROUP BY department_id
+HAVING SUM(sal) > 3000;
+
+7. list all department which has minimum 5 employees
+SELECT department_id, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department_id
+HAVING COUNT(*) >= 5;
+
+8. count how many employees earn salary more than 2000 in each job
+SELECT job, COUNT(*) AS count_high_salary
+FROM employees
+WHERE sal > 2000
+GROUP BY job;
+
+9. list all enames and jobs in small case letter
+SELECT LOWER(ename) AS ename_lower, LOWER(job) AS job_lower
+FROM employees;
+
+10. list all names and jobs so that the length of name should be 15 if it is smaller then add spaces
+to left
+SELECT LPAD(ename, 15) AS ename_padded, LPAD(job, 15) AS job_padded
+FROM employees;
+
+11. display min sal,max sal, average sal for all employees working under same manager
+SELECT manager_id, MIN(sal) AS min_sal, MAX(sal) AS max_sal, AVG(sal) AS avg_sal
+FROM employees
+GROUP BY manager_id;
+
+12. find sum of total earnings(sal+comm), average of sal+comm,
+for all employees who earn sal > 2000 and work in either dept no 10 or 20
+SELECT SUM(sal + NVL(comm, 0)) AS sum_earnings, AVG(sal + NVL(comm, 0)) AS avg_earnings
+FROM employees
+WHERE sal > 2000 AND department_id IN (10, 20);
+
+13. list all employees who joined in Aug 1980 and salary is >1500 and < 2500
+SELECT *
+FROM employees
+WHERE EXTRACT(MONTH FROM hiredate) = 8
+  AND EXTRACT(YEAR FROM hiredate) = 1980
+  AND sal BETWEEN 1500 AND 2500;
+
+14. list all employees joined in either aug or may or dec
+SELECT *
+FROM employees
+WHERE EXTRACT(MONTH FROM hiredate) IN (5,
+
+15. display name and hiredate in dd/mm/yy format for all employees whose job is clerk and they
+earn some commission
+
+SELECT ename, TO_CHAR(hiredate, 'DD/MM/YY') AS hiredate_formatted
+FROM employees
+WHERE job = 'CLERK' AND comm IS NOT NULL;
