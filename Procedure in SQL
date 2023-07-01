@@ -1,0 +1,38 @@
+#creating procedure with reference to Employee table
+
+
+
+#create a procedure to insert record in Employee table.
+
+SQL>
+  1  create or replace procedure insertrec(pdno dept.deptno%type,pdnm dept.dname%type,ploc varchar2)
+  2  as
+  3  begin
+  4     insert into dept values(pdno,pdnm,ploc);
+  5* end;
+SQL> /
+
+Procedure created.
+
+SQL> execute insertrec(1,'ddd','fff');
+
+PL/SQL procedure successfully completed.
+
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+        27 HR111
+        25 HR             pune
+        27 HR222          pune
+        28 HR222          pune
+        29 HR222          pune
+         1 ddd            fff       #record(1.'ddd','fff') is added to the dept table
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
