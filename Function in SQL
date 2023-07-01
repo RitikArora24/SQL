@@ -1,0 +1,102 @@
+#creating function with reference to Employee table.
+
+
+
+#Create a function to get experience from date of joining.
+
+SQL>
+  1  create or replace function get_exp(pdate date) return number
+  2  as
+  3     experience number :=0;
+  4  begin
+  5     experience:=floor(months_between(sysdate,pdate)/12);
+  6     return experience;
+  7* end;
+SQL> /
+
+Function created.
+
+SQL> select empno,ename,get_exp(hiredate)
+  2  from emp;
+
+     EMPNO ENAME      GET_EXP(HIREDATE)
+---------- ---------- -----------------
+      7369 SMITH                     42
+      7499 ALLEN                     42
+      7521 WARD                      42
+      7566 JONES                     42
+      7654 MARTIN                    41
+      7698 BLAKE                     41
+      7782 CLARK                     41
+      7788 SCOTT                     40
+      7839 KING                      41
+      7844 TURNER                    41
+      7876 ADAMS                     40
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+#Create a function to generate email-id with first three characters of name and last 3 characters of job and '@mycompany.com'.  
+
+  1   create or replace function generate_email(name varchar2,job varchar2) return varchar2
+  2   as
+  3   email varchar2(100);
+  4   begin
+  5    email:=concat(concat(concat(substr(name,1,3),'.'),substr(job,1,3)),'@mycompany.com');
+  6   return email;
+  7*   end;
+  8  /
+
+Function created.
+
+#set the workspace size to see the data clearly
+SQL> set linesize 120;   #it will set the line size
+SQL> set pagesize 30      #it will set the page size
+SQL> select empno,ename,generate_email(ename,job)
+  2  from emp;
+
+       EMPNO ENAME
+---------- ----------
+GENERATE_EMAIL(ENAME,JOB)
+----------------------------------------------------
+      7369 SMITH
+SMI.SR @mycompany.com
+
+      7499 ALLEN
+ALL.SAL@mycompany.com
+
+      7521 WARD
+WAR.SAL@mycompany.com
+
+      7566 JONES
+JON.MAN@mycompany.com
+
+      7654 MARTIN
+MAR.SAL@mycompany.com
+
+      7698 BLAKE
+BLA.MAN@mycompany.com
+
+      7782 CLARK
+CLA.MAN@mycompany.com
+
+      7788 SCOTT
+SCO.ANA@mycompany.com
+
+      7839 KING
+KIN.MAN@mycompany.com
+
+      7844 TURNER
+TUR.SAL@mycompany.com
+
+      7876 ADAMS
+ADA.CLE@mycompany.com
+
+      7900 JAMES
+JAM.CLE@mycompany.com
+
+      7902 FORD
+FOR.ANA@mycompany.com
+
+      7934 MILLER
+MIL.MAN@mycompany.com
+
+------------------------------------------------------------------------------------------------------------------------------------------
